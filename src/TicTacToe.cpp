@@ -1,7 +1,8 @@
 #include "TicTacToe.hpp"
-#include <iostream>
+
 
 TicTacToe::TicTacToe() {
+    srand(time(NULL));
     for (int i = 0; i < BOARD_SIZE; i++) {
         m_board[i] = DEFAULT;
     }
@@ -37,12 +38,35 @@ void TicTacToe::run() {
             continue;
         }
         print();
-        if (didWin()) {
+        if (didWin(m_board)) {
             std::cout << getTurn() << " Won the game!\n";
             m_running = false;
         }
+        else if (didTie(m_board)) {
+            std::cout << "Tie!\n";
+            m_running = false;
+            break;
+        }
         m_turn = !m_turn;
+        
+        if (!m_using_ai) {
+            continue; // play game normally
+        }
+        runAI();
     }
+}
+
+void TicTacToe::runAI() {
+    // create copy of board
+    int index = 0;
+    bool currentTurn = m_turn;
+    miniMax(m_board, &index);
+    m_turn = currentTurn;
+    m_board[index] = getTurn();
+}
+
+Result TicTacToe::miniMax(char board[BOARD_SIZE], int *index) {
+    
 }
 
 bool TicTacToe::isNumber(const std::string& num) {
@@ -75,7 +99,7 @@ char TicTacToe::getTurn() {
 }
 
 
-bool TicTacToe::didWin() {
+bool TicTacToe::didWin(char board[BOARD_SIZE]) {
     // horizontal
     for (int i = 0; i < 9; i+=3) {
         if (m_board[i] == m_board[i+1] && m_board[i] == m_board[i+2] && m_board[i] != DEFAULT) {
@@ -92,4 +116,13 @@ bool TicTacToe::didWin() {
     // diagonals
     return (m_board[0] == m_board[4] && m_board[0] == m_board[8] && m_board[0] != DEFAULT) || 
            (m_board[2] == m_board[4] && m_board[2] == m_board[6] && m_board[2] != DEFAULT);
+}
+
+bool TicTacToe::didTie(char board[BOARD_SIZE]) {
+    for (int i = 0; i < BOARD_SIZE; i++) {
+        if (m_board[i] != DEFAULT) {
+            return false;
+        }
+    }
+    return true;
 }
