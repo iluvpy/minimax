@@ -1,0 +1,1 @@
+clang++ src/*.cpp -std=c++17 -o client
