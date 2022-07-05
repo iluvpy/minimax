@@ -9,11 +9,11 @@
 #define CIRCLE 'o'
 #define ASCII_0 48
 #define ASCII_9 57
-#define BOARD_SIZE 9
 
-enum Result : char {
-    Win = 0,
-    Loose,
+
+enum GameResult : unsigned char {
+    XWin,
+    CircleWin,
     Tie
 };
 
@@ -23,15 +23,15 @@ public:
     void run();
     
 private:
-    char m_board[BOARD_SIZE];
+    char m_board[9];
     bool m_running;
     bool m_turn;
     bool m_using_ai;
     void print();
     bool isNumber(const std::string& num);
-    char getTurn();
-    bool didWin(char board[BOARD_SIZE]);
-    bool didTie(char board[BOARD_SIZE]);
+    char getTurn(bool turn);
+    bool didWin(char board[9]);
+    bool didTie(char board[9]);
     void runAI();
-    Result miniMax(char board[BOARD_SIZE], int* index);
+    int getRandomFreeSpace(char board[9]);
 };

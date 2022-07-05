@@ -1,2 +1,2 @@
 # minimax
-tic tac toe minimax ai
+tic tac toe ai (inspired by minimax)
